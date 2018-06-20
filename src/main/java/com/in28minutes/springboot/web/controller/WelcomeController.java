@@ -1,28 +1,38 @@
 package com.in28minutes.springboot.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import com.in28minutes.springboot.web.service.LoginService;
 
 @Controller
-@SessionAttributes("name")
-public class LoginController {
-	
-	@Autowired
-	LoginService service;
-	
+//@SessionAttributes("name")
+public class WelcomeController {
+		
 	@RequestMapping(value="/", method = RequestMethod.GET)
-	public String showLoginPage(ModelMap model){
-		model.put("name", "kunj");
+	public String showWelcomePage(ModelMap model){
+		model.put("name", getLoggedInUserName(model));
 		return "welcome";
 	}
 	
-	@RequestMapping(value="/login", method = RequestMethod.POST)
+	private String getLoggedInUserName(ModelMap model) {
+		Object principal = SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails)
+			return ((UserDetails) principal).getUsername();
+
+		return principal.toString();
+	}
+	
+	
+	
+	/*@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String showWelcomePage(ModelMap model, @RequestParam String name, @RequestParam String password){
 		
 		boolean isValidUser = service.validateUser(name, password);
@@ -35,6 +45,6 @@ public class LoginController {
 		model.put("password", password);
 		
 		return "welcome";
-	}
+	}*/
 
 }
