@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.in28minutes.springboot.web.service.LoginService;
 
 @Controller
@@ -19,7 +18,8 @@ public class LoginController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String showLoginPage(ModelMap model){
-		return "login";
+		model.put("name", "kunj");
+		return "welcome";
 	}
 	
 	@RequestMapping(value="/login", method = RequestMethod.POST)
